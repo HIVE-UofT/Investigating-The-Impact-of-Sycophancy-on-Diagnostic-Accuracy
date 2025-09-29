@@ -7,7 +7,7 @@ Your Google Drive should look something like this:
 
 ```
 My Drive/
-└── 📂 Reusable Benchmark/
+└── 📂 Benchmark/
     ├── 📄 config.yaml
     ├── 📂 data/
     ├── 📂 notebooks/
