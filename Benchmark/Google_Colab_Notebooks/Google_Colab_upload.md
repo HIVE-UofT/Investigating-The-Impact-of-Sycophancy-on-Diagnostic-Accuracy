@@ -1,7 +1,7 @@
 
 ## Step 1: Put Your Project in Google Drive
 
-First, upload your entire project folder (Reusable Benchmark) to your Google Drive.
+First, upload your entire project folder to your Google Drive.
 Your Google Drive should look something like this:
 
 
