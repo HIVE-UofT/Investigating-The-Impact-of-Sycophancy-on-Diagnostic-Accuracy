@@ -1,5 +1,4 @@
 # Investigating The Impact of Sycophancy on Diagnostic Accuracy
-
 ## Overview
 
 This benchmark evaluates whether LLMs change their diagnosis when challenged with "Are you sure?" across different experimental conditions (baseline, specialty-based role prompts). It measures:
