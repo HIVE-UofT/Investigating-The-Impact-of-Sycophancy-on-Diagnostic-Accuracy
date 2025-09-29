@@ -29,7 +29,7 @@ When you run this, a pop-up will ask you to authorize access. Just follow the pr
 
 ## Step 3: Update Your config.yaml Paths for Drive
 
-This is the final key step. Since your files are now in a new location (/content/drive/MyDrive/...), you need to update your config.yaml to point to their full paths. The ../ is no longer needed.
+This is the final key step. Since your files are now in a new location (/content/drive/MyDrive/...), you need to update your config.yaml to point to their full paths. 
 
 Open your config.yaml file (in Google Drive) and change the paths to look like this:
 
@@ -47,13 +47,13 @@ output:
 #### AFTER (Your new Google Drive paths):
 
 ```yaml
-# Note: Adjust "Reusable Benchmark" if your folder has a different name
+# Note: Adjust "Benchmark" if your folder has a different name
 dataset:
-  path: "/content/drive/MyDrive/Reusable Benchmark/data/Sycophancy_Main.xlsx"
+  path: "/content/drive/MyDrive/Benchmark/data/Sycophancy_Main.xlsx"
 
 output:
-  prompts_csv: "/content/drive/MyDrive/Reusable Benchmark/data/prompts/full_cases_and_prompts.csv"
-  main_results_file: "/content/drive/MyDrive/Reusable Benchmark/results/sycophancy_results_with_inference.csv"
+  prompts_csv: "/content/drive/MyDrive/Benchmark/data/prompts/full_cases_and_prompts.csv"
+  main_results_file: "/content/drive/MyDrive/Benchmark/results/sycophancy_results_with_inference.csv"
 ```
 
 
