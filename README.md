@@ -138,7 +138,7 @@ python run_pipeline.py
 ```
 
 ## How It Works
-![Technology-animation-gif](vzxvvzv)
+![Technology-animation-gif](https://github.com/HIVE-UofT/Investigating-The-Impact-of-Sycophancy-on-Diagnostic-Accuracy/blob/main/Benchmark/Images/Anchoring_Sycophancy_Case_Study.png)
 
 ### Two-Pass Evaluation
 
