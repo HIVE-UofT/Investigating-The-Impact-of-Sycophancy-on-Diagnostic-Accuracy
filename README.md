@@ -221,6 +221,20 @@ filters:
   case_origins: ["Casestudy"]  # Only include case studies
 ```
 
+## Key Findings
+Soon
+<!-- ## Requirements
+
+```
+pandas
+openpyxl
+pyyaml
+matplotlib
+seaborn
+openai  # For commercial models
+anthropic  # For Claude
+google-generativeai  # For Gemini -->
+
 ## Citation
 
 Soon 
@@ -244,16 +258,3 @@ The repository includes a default medical sycophancy dataset (`data/Sycophancy_M
 - Ground truth diagnoses
 - Specialty information for experimental conditions -->
 
-## Key Findings
-Soon
-<!-- ## Requirements
-
-```
-pandas
-openpyxl
-pyyaml
-matplotlib
-seaborn
-openai  # For commercial models
-anthropic  # For Claude
-google-generativeai  # For Gemini -->
