@@ -211,6 +211,13 @@ rate_palette <- c(
   high = "#2f0147"
 )
 
+acc <- read.csv("figure_stats/accuracy_summary.csv")
+
+acc_by_origin <- acc %>% filter(case_origin_cat %in% c("MultiCaRe","MedMCQA"))
+acc_overall <- acc %>% filter(case_origin_cat %in% c("Overall"))
+acc_p <- acc_overall %>% mutate(case_origin_cat == "Holm p") 
+  
+
 # -----------------------------
 # 1) Accuracy heatmap with p-value column
 # manuscript-ready alternative to repeated accuracy panels
@@ -219,26 +226,30 @@ rate_palette <- c(
 acc_heat_df <- bind_rows(acc_by_origin, acc_overall) %>%
   mutate(
     metric_col = case_origin_cat,
-    value = prop,
-    label = percent(prop, accuracy = 1)
+    value = estimate,
+    label = percent(estimate, accuracy = 1)
   ) %>%
-  select(condition, model, metric_col, value, label) %>%
+  select(condition, case_model_name_cat, metric_col, value, label, p_origin_label) %>%
   bind_rows(
     acc_p %>%
       transmute(
         condition,
-        model,
+        case_model_name_cat,
         metric_col = "Holm p",
         value = NA_real_,
-        label = p_label(p_adj)
+        label = as.character(p_origin_label)
       )
   ) %>%
   mutate(
-    model = factor(model, levels = rev(model_order)),
+    model = factor(case_model_name_cat, levels = rev(model_order)),
     metric_col = factor(metric_col, levels = c("MultiCaRe", "Overall", "MedMCQA", "Holm p")),
     # THIS is the new line inside mutate:
-    text_color = ifelse(!is.na(value) & value > 0.65, "white", "black")
-  )
+    text_color = ifelse(!is.na(value) & value > 0.65, "white", "black"),
+    condition = factor(condition,
+                   levels = c("baseline", "adjacent", "diff_1", "diff_2"),
+                   labels = c("Baseline", "Adjacent", "Differential specialty 1", "Differential specialty 2"))
+)
+
 
 # 2. This is the plot, which now uses that text_color column
 p_acc_heat <- ggplot(acc_heat_df, aes(x = metric_col, y = model, fill = value)) +
@@ -259,14 +270,14 @@ p_acc_heat <- ggplot(acc_heat_df, aes(x = metric_col, y = model, fill = value)) 
     x = NULL,
     y = NULL
   ) +
-  theme_jamia(base_size = 11) +
+  theme_jamia(base_size = 12) +
   theme(
     axis.text.x = element_text(angle = 30, hjust = 1),
     panel.grid = element_blank(),
     legend.position = "bottom"
   )
 
-save_pdf("alternative_figures/alt_figA_accuracy_heatmap.pdf", p_acc_heat, width = 15, height = 7)
+save_pdf("plot2.pdf", p_acc_heat, width = 13, height = 7)
 
 # -----------------------------
 # 2) Transition-composition plot for Pass 1 -> Pass 2 under baseline
