@@ -35,7 +35,7 @@ set_script_wd <- function() {
 }
 set_script_wd()
 
-input_csv <- "llm_judge_final_20251026_161301.csv"
+input_csv <- "llm_judge_all_revised.csv"
 if (!file.exists(input_csv)) {
   stop("Could not find input file: ", input_csv, call. = FALSE)
 }
@@ -601,7 +601,7 @@ vs_baseline_all <- bind_rows(
   summarize_vs_baseline(df, "diff_1"),
   summarize_vs_baseline(df, "diff_2")
 )
-
+# 
 write.csv(accuracy_all, "figure_stats/accuracy_summary.csv", row.names = FALSE)
 write.csv(pass_flip_all, "figure_stats/pass1_pass2_flip_summary.csv", row.names = FALSE)
 write.csv(pass_change_all, "figure_stats/pass1_vs_pass2_paired_effects.csv", row.names = FALSE)
@@ -888,56 +888,6 @@ make_effect_forest <- function(dat,
   p
 }
 
-# ---------- plot1 ----------
-# plot1_dat <- accuracy_all %>%
-#   filter(condition == "baseline") %>%
-#   transmute(
-#     case_model_name_cat,
-#     case_model_type_cat,
-#     case_origin_cat,
-#     condition_label,
-#     estimate = estimate,
-#     lower = lower,
-#     upper = upper,
-#     p_origin_holm = p_origin_holm,
-#     sig_origin = sig_origin,
-#     p_origin_label = p_origin_label
-#   )
-# 
-# plot1 <- make_rate_plot(
-#   dat = plot1_dat,
-#   model_order = model_order,
-#   xlab = "Accuracy",
-#   core_limits = c(0, 1)
-# )
-# save_pdf(plot1, "plot1.pdf", width = 6, height = 6.9)
-
-# ---------- Supplementary Figure 1 / supp1 ----------
-# supp1_dat <- accuracy_all %>%
-#   filter(condition %in% c("adjacent", "diff_1", "diff_2")) %>%
-#   transmute(
-#     case_model_name_cat,
-#     case_model_type_cat,
-#     case_origin_cat,
-#     condition_label = factor(condition_label,
-#                              levels = c("Adjacent", "Diff specialty 1", "Diff specialty 2")),
-#     estimate = estimate,
-#     lower = lower,
-#     upper = upper,
-#     p_origin_holm = p_origin_holm,
-#     sig_origin = sig_origin,
-#     p_origin_label = p_origin_label
-#   )
-# 
-# supp1 <- make_rate_plot(
-#   dat = supp1_dat,
-#   model_order = model_order,
-#   xlab = "Accuracy",
-#   core_limits = c(0, 1),
-#   facet_var = "condition_label",
-#   facet_ncol = 1
-# )
-# save_pdf(supp1, "supp1.pdf", width = 11.8, height = 10.8)
 
 # ---------- Figure 4 ----------
 
@@ -1011,44 +961,6 @@ plot4 <- make_rate_plot(
 
 save_pdf(plot4, "plot4.pdf", width = 12, height = 7)
 
-
-# 
-# plot4_dat <- vs_baseline_all %>%
-#   filter(condition %in% c("adjacent", "diff_1")) %>%
-#   transmute(
-#     case_model_name_cat,
-#     case_model_type_cat,
-#     case_origin_cat,
-#     condition,
-#     condition_label = factor(condition_label,
-#                              levels = c("Adjacent", "Diff specialty 1", "Diff specialty 2")),
-#     estimate = flip_rate,
-#     lower = flip_lower,
-#     upper = flip_upper
-#   ) %>%
-#   left_join(
-#     bind_rows(flip_origin_adj, flip_origin_diff1) %>%
-#       select(case_model_name_cat, condition, p_origin_holm, sig_origin, p_origin_label),
-#     by = c("case_model_name_cat", "condition")
-#   )
-# 
-# plot4bc <- make_rate_plot(
-#   dat = plot4_dat,
-#   model_order = model_order,
-#   xlab = "Flip rate vs baseline",
-#   core_limits = c(0, 0.5),
-#   facet_var = "condition_label",
-#   facet_ncol = 2
-# )
-# 
-# 
-# plot4 <- (plot4a / plot4bc) +
-#   plot_layout(guides = "collect") &
-#   theme(legend.position = "bottom")
-# 
-# 
-# save_pdf(plot4, "plot4.pdf", width = 8, height = 6)
-
 # ---------- Figure 5  ----------
 plot5_dat <- pass_change_all %>%
   filter(condition == "baseline")
@@ -1092,9 +1004,11 @@ save_pdf(plot5, "plot5.pdf", width = 15, height = 7)
 plot6a_dat <- vs_baseline_all %>%
   filter(condition %in% c("adjacent", "diff_1")) %>%
   mutate(
-    condition_label = factor(condition_label,
-                             levels = c("Adjacent", "Diff specialty 1", "Diff specialty 2"))
+    condition_label = factor(condition,
+                             levels = c("adjacent", "diff_1"),
+                             labels = c("Adjacent", "Differential Specialty 1"))
   )
+
 
 plot6a <- make_effect_forest(
   dat = plot6a_dat,
@@ -1116,9 +1030,11 @@ save_pdf(plot6a, "plot6a.pdf", width = 15.0, height = 7)
 plot6b_dat <- vs_baseline_all %>%
   filter(condition %in% c("adjacent", "diff_1")) %>%
   mutate(
-    condition_label = factor(condition_label,
-                             levels = c("Adjacent", "Diff specialty 1", "Diff specialty 2"))
+    condition_label = factor(condition,
+                             levels = c("adjacent", "diff_1"),
+                             labels = c("Adjacent", "Differential Specialty 1"))
   )
+
 
 plot6b <- make_effect_forest(
   dat = plot6b_dat,
@@ -1137,7 +1053,6 @@ plot6b <- make_effect_forest(
   panel_limit = 2.2
 )
 #Changed panel limit here because originally it was too squished
-
 save_pdf(plot6b, "plot6b.pdf", width = 15.0, height = 7)
 
 
@@ -1173,8 +1088,9 @@ supp4_dat <- pass_flip_all %>%
     case_model_name_cat,
     case_model_type_cat,
     case_origin_cat,
-    condition_label = factor(condition_label,
-                             levels = c("Adjacent", "Diff specialty 1", "Diff specialty 2")),
+    condition_label = factor(condition,
+                             levels = c("adjacent", "diff_1", "diff_2"),
+                              labels = c("Adjacent", "Differential Specialty 1","Differential Specialty 2")),
     estimate = estimate,
     lower = lower,
     upper = upper,

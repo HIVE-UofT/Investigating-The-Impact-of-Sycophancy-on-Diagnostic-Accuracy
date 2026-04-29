@@ -1,5 +1,4 @@
 
-
 required_pkgs <- c(
   "dplyr", "tidyr", "stringr", "ggplot2", "patchwork", "purrr",
   "forcats", "scales", "ggrepel", "ggforce", "cowplot"
@@ -151,7 +150,7 @@ save_pdf <- function(filename, plot_obj, width = 12, height = 8) {
 # -----------------------------
 safe_setwd()
 
-df <- read.csv("llm_judge_final_20251026_161301.csv", stringsAsFactors = FALSE)
+df <- read.csv("llm_judge_all_revised.csv", stringsAsFactors = FALSE)
 
 dir.create("alternative_figures", showWarnings = FALSE)
 
@@ -270,12 +269,12 @@ p_acc_heat <- ggplot(acc_heat_df, aes(x = metric_col, y = model, fill = value)) 
     x = NULL,
     y = NULL
   ) +
-  theme_jamia(base_size = 12) +
+  theme_jamia(base_size = 14) +
   theme(
     axis.text.x = element_text(angle = 30, hjust = 1),
     panel.grid = element_blank(),
-    legend.position = "bottom"
-  )
+    legend.position = "bottom",
+    legend.key.size = unit(1, "cm"))
 
 save_pdf("plot2.pdf", p_acc_heat, width = 13, height = 7)
 
@@ -808,14 +807,14 @@ save_pdf(
   "alternative_figures/alt_supp_upset_baseline_correct_MultiCaRe.pdf",
   p_correct_multicare_obj$plot,
   width = 11,
-  height = 4.5
+  height = 6
 )
 
 save_pdf(
   "alternative_figures/alt_supp_upset_baseline_correct_MedMCQA.pdf",
   p_correct_medmcqa_obj$plot,
   width = 11,
-  height = 4.5
+  height = 6
 )
 
 write_intersection_table(
